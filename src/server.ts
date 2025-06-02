@@ -5,7 +5,7 @@ import { open } from 'sqlite';
 
 const clients: { [id:string]: any } = {};
 
-const port: number = 8000;
+const port: number = 3000;
 
 const app = express();
 app.use(cors());
