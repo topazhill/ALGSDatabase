@@ -4,7 +4,8 @@
   "main": "src/server.ts",
   "scripts": {
     "build": "tsc src/server.ts --outDir dist",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "dev": "tsc --watch src/server.ts --outDir dist"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +15,11 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/socket.io": "^3.0.1",
     "express": "^4.21.2",
     "socket.io": "^4.3.2",
-    "@types/express": "^5.0.0",
-    "@types/socket.io": "^3.0.1"
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   }
 }
