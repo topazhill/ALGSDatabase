@@ -4,6 +4,7 @@ import sqlite3
 import time
 # This script fetches data from the Apex Legends tournament API, processes player and team statistics, 
 scrim_ids = [8413, 8414, 8423, 8424, 8433, 8434, 8351, 8352, 8357, 8358, 8364, 8365, 8371, 8372, 8377, 8378, 8389, 8390, 8394, 8395, 8400, 8401, 8406, 8407]
+nse_ids = [9566, 9565, 9529, 9517, 9490, 9489, 9433, 9432]
 
 def get_info(id):
     url = f'https://apexlegendsstatus.com/tournament/ingram/?qt=getScores&tournamentId={id}'
@@ -128,14 +129,15 @@ def add_tournament(id):
     for coach in coaches:
         print(repr(coach))
 
-    conn = sqlite3.connect('ALGSScrimData.db')
+    conn = sqlite3.connect('NSEData.db')
     c = conn.cursor()
 
     c.execute('''CREATE TABLE IF NOT EXISTS players (
         id TEXT PRIMARY KEY,
         name TEXT,
         points INTEGER,
-        tournamentsPlayed INTEGER DEFAULT 0
+        tournamentsPlayed INTEGER DEFAULT 0,
+        cost INTEGER DEFAULT 300
     )''')
 
     c.execute('''CREATE TABLE IF NOT EXISTS coaches (
@@ -173,6 +175,17 @@ def add_tournament(id):
         wins INTEGER,
         FOREIGN KEY (tournamentId) REFERENCES Tournament(tournamentId),
         FOREIGN KEY (teamName) REFERENCES coaches(teamName)
+    )''')
+
+    c.execute('''CREATE TABLE IF NOT EXISTS UserPlayers (
+        userId TEXT PRIMARY KEY,
+        playerId TEXT
+    )''')
+
+    c.execute('''CREATE TABLE IF NOT EXISTS Users (
+        username TEXT PRIMARY KEY,
+        totalPoints INTEGER,
+        money INTEGER
     )''')
 
     # Insert tournament data
@@ -233,7 +246,11 @@ def add_tournament(id):
     conn.commit()
     conn.close()
     time.sleep(1)  # To avoid hitting the API too fast
+#
+# id = int(input("Enter tournament ID: "))
+# add_tournament(id)
+# print("Tournament data added successfully.")
 
-id = int(input("Enter tournament ID: "))
-add_tournament(id)
-print("Tournament data added successfully.")
+for id in nse_ids:
+    add_tournament(id)
+    time.sleep(1)
