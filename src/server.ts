@@ -129,14 +129,15 @@ app.get('/tournament/:id/players', (req, res) => {
 app.post('/newuser', (req, res) => {
     const name = req.body.name;
     const points = req.body.points || 0; // Default points to 0 if not provided
-    console.log(name, points);
+    const money = req.body.money || 1000; // Defaults to 1000 if not provided
+    console.log(name, points, money);
     if (name === undefined || name === '' || points === undefined) {
         res.status(400).json({ error: 'Missing user data' });
     }
     else {
-        db.run('INSERT INTO users (username, totalPoints) VALUES (?, ?)', [name, points])
+        db.run('INSERT INTO users (username, totalPoints, money) VALUES (?, ?, ?)', [name, points, money])
             .then(() => {
-                res.status(201).json({ message: 'New user created successfully', name, points });
+                res.status(201).json({ message: 'New user created successfully', name, points, money });
             })
             .catch((error) => {
                 console.error('Error creating new user:', error);
