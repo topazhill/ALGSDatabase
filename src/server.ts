@@ -64,7 +64,7 @@ interface User {
 let db = null;
 (async () => {
     db = await open({
-        filename: 'ALGSScrimData.db',
+        filename: 'NSEData.db',
         driver: sqlite3.cached.Database
     })
 })()
